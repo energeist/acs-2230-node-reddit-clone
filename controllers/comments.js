@@ -19,4 +19,44 @@ module.exports = (app) => {
       console.log(err);
     }
   });
+
+  //Updoot
+  app.put('/comments/:id/vote-up', async (req, res) => {
+    try {
+      const comment = await Comment.findById(req.params.id);
+      if (!comment.upVotes.includes(req.user._id)) {
+        if (comment.downVotes.includes(req.user._id)) {
+          comment.downVotes.pop(req.user._id)
+          comment.voteScore += 1;
+        } else {
+          comment.upVotes.push(req.user._id);
+          comment.voteScore += 1;
+        };
+      };
+      await comment.save();
+      return res.status(200);
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  //Downdoot
+  app.put('/comments/:id/vote-down', async (req, res) => {
+    try {
+      const comment = await Comment.findById(req.params.id);  
+      if (!comment.downVotes.includes(req.user._id)) {
+        if (comment.upVotes.includes(req.user._id)) {
+          comment.upVotes.pop(req.user._id)
+          comment.voteScore -= 1;
+        } else {
+          comment.downVotes.push(req.user._id);
+          comment.voteScore -= 1;
+        }
+      };
+      await comment.save();
+      return res.status(200);
+    } catch (err) {
+      console.log(err);
+    }
+  });
 };

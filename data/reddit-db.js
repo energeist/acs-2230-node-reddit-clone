@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 assert = require('assert');
 
+// Testing on Caprover
 const url = process.env.MONGODB;
 mongoose.connect(
   url,

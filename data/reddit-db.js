@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 assert = require('assert');
 
-const url = 'mongodb://localhost/reddit-db';
+const url = process.env.MONGODB;
 mongoose.connect(
   url,
   {
